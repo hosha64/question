@@ -1,0 +1,43 @@
+<!-- result: great, good, bad -->
+
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>سبزلرن - بازی پرسشنامه</title>
+    <link rel="stylesheet" href="./public/css/styles.css" />
+  </head>
+  <body onload="showQuestion()">
+    <section class="container"></section>
+
+    <div class="modal-screen hidden">
+      <article class="modal">
+        <header>
+          <span>نتیجه پرسش نامه</span>
+          <button>X</button>
+        </header>
+        <main>
+          <div class="result-card">
+            <p>نتیجه:</p>
+            <p class="result">بد!</p>
+          </div>
+          <p class="final-result">
+            شما تونستید <span class="answered-questions">2</span> پاسخ صحیح از
+            <span class="total-questions">12</span> سوال بدید.
+          </p>
+        </main>
+        <footer class="modal-footer">
+          <button class="close">انصراف</button>
+          <button class="continue">تلاش مجدد</button>
+        </footer>
+      </article>
+    </div>
+    <footer class="copyright">
+      &copy; طراحی شده با 💚 در
+      <a href="https://sabzlearn.ir" target="_blank">سبزلرن</a>
+    </footer>
+
+    <script src="./js/app.js"></script>
+  </body>
+</html>
