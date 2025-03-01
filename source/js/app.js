@@ -36,32 +36,91 @@ const nextbtn = document.querySelector(".next");
 const currentnumber = document.querySelector(".current");
 const modalscreen = document.querySelector(".modal-screen");
 const questionElement = document.querySelector(".questions");
+const closeModal = document.querySelector("header button");
+const cloesBtn = document.querySelector(".close");
+const continuebtn = document.querySelector(".continue");
 
 let index = 0;
 let current = 1;
+let score = 0;
 function changeQuestion() {
+  changeScore(index);
   index++;
   current++;
 
   updateQuerstion(index);
 }
+function selected() {
+  const options = document.querySelectorAll(".option");
+  options.forEach((option) => {
+    option.addEventListener("click", function (event) {
+      const selectedoption = document.querySelector(".selected");
 
+      if (selectedoption) {
+        selectedoption.classList.remove("selected");
+      }
+      option.classList.add("selected");
+    });
+  });
+}
+function changeScore(index) {
+  const querstion = document.querySelector(".question");
+  const optionselect = document.querySelector(".selected label");
+  if (optionselect.innerHTML == questions[index].answer) {
+    score++;
+  }
+  console.log(score);
+}
 function showQuestion() {
   updateQuerstion(index);
 }
 
+continuebtn.addEventListener("click", restquestion);
+
+function restquestion() {
+  index = 0;
+  score = 0;
+  document.querySelector(".current").innerHTML = 1;
+
+  updateQuerstion(index);
+  console.log(index);
+  hiddenModal();
+}
+
 function showmodalResult() {
+  console.log(index);
+  changeScore(index);
+  const resultvalue = document.querySelector(".answered-questions");
+  const resultcard = document.querySelector(".result-card .result");
+  const totalquestions = document.querySelector(".total-questions");
+  resultvalue.innerHTML = score;
+  totalquestions.innerHTML = questions.length;
+  if (score > 3) {
+    resultcard.classList.add("good");
+    resultcard.innerHTML = "خوب";
+  } else {
+    resultcard.classList.add("bad");
+    resultcard.innerHTML = "بد";
+  }
   modalscreen.classList.remove("hidden");
 }
 
-function selectItem(event) {
-  console.log(event.target);
+closeModal.addEventListener("click", hiddenModal);
+cloesBtn.addEventListener("click", hiddenModal);
+document.body.addEventListener("keydown", function (event) {
+  if (event.key == "Escape") {
+    hiddenModal();
+  }
+});
+function hiddenModal() {
+  modalscreen.classList.add("hidden");
 }
+
 function updateQuerstion(index) {
   container.innerHTML = "";
   container.insertAdjacentHTML(
     "beforeend",
-    `   <h1 class="question">${questions[index].title}</h1>
+    `<h1 class="question">${questions[index].title}</h1>
       <div>
         <p class="quest-index">
           پرسش <span class="current">${current}</span> از
@@ -69,8 +128,8 @@ function updateQuerstion(index) {
           پرسش
         </p>
       </div>
-      <div class="questions" onclick="selectItem(event)">
-        <article class="quest">
+      <div class="questions">
+        <article class="quest option">
           <input type="radio" name="questbox" id="quest-${
             questions[index].id
           }" />
@@ -78,7 +137,7 @@ function updateQuerstion(index) {
       questions[index].options[0]
     }</label>
         </article>
-        <article class="quest selected">
+        <article class="quest option">
           <input type="radio" name="questbox" id="quest-${
             questions[index].id + 1
           }" />
@@ -86,7 +145,7 @@ function updateQuerstion(index) {
       questions[index].options[1]
     }</label>
         </article>
-        <article class="quest">
+        <article class="quest option">
           <input type="radio" name="questbox" id="quest-${
             questions[index].id + 2
           }" />
@@ -96,10 +155,13 @@ function updateQuerstion(index) {
         </article>
       </div>
       <div class="buttons">
-        <button class="result-button" onclick="showmodalResult()" >نتیجه</button>
+        <button class="result-button ${
+          index < 4 ? "hidden" : ""
+        }" onclick="showmodalResult()" >نتیجه</button>
         <button class="next ${
           index == 4 ? "hidden" : ""
-        }" onclick="changeQuestion()">بعدی</button>
+        }" onclick="changeQuestion(${index})">بعدی</button>
       </div>`
   );
+  selected();
 }
